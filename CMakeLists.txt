@@ -16,5 +16,4 @@ include_directories(${SCMLIB_HEADERS_DIR})
 add_subdirectory(src)
 add_subdirectory(test)
 
-enable_testing()
 add_test (NAME all COMMAND SCMLib_tests)
