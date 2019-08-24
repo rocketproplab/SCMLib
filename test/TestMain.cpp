@@ -1,24 +1,10 @@
-#include <iostream>
-#include "Example.h"
 #include "miniunit.h"
+#include "SCMPacketTest.h"
 
-MU_TEST(test_failing_check) {
-  Example e;
-  mu_check(e.printThing() == 0);
-}
-
-MU_TEST(test_passing_check) {
-  Example e;
-	mu_check(e.printThing() == 1);
-}
-
-MU_TEST_SUITE(test_suite) {
-	MU_RUN_TEST(test_passing_check);
-	MU_RUN_TEST(test_failing_check);
-}
+using namespace RPL;
 
 int main(){
-  MU_RUN_SUITE(test_suite);
+  MU_RUN_SUITE(SCM_packet_tests);
 	MU_REPORT();
 	return minunit_status;
 }
