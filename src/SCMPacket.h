@@ -8,13 +8,14 @@ namespace RPL{
   class SCMPacket {
   public:
     SCMPacket(const char * stringRep, int len);
+    SCMPacket(const char * id, const char * data);
 
     bool isValid();
+    void write(char * buffer);
     const char * getId();
     const char * getData();
 
   private:
-    bool validate(const char * stringRep, int len);
     int calculateChecksum(const char * packet);
     void readData(const char * stringRep);
     bool valid;
