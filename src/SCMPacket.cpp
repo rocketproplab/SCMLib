@@ -5,7 +5,9 @@ using namespace RPL;
 SCMPacket::SCMPacket(const char * stringRep, int len){
   this->valid = this->validate(stringRep, len);
   if(this->valid){
-    this->checksum = this->calculateChecksum(stringRep);
+    int checksum = this->calculateChecksum(stringRep);
+    this->readData(stringRep);
+    this->valid = this->checksum == checksum;
   }
 }
 
@@ -32,11 +34,30 @@ int SCMPacket::calculateChecksum(const char * packet) {
   int addedASCII = 0;
 
   //loop through the package, but leave out the checksum for calculating the checksum
-  for (int i = 0; i < SCM_PACKET_LEN; i++) {
+  for (int i = 0; i < SCM_CHECKSUMABBLE_PACKET_LEN; i++) {
     addedASCII += (int)packet[i];
   }
 
   //take modulo to calculated checksum
   int calculatedChecksum = addedASCII % 100;
   return calculatedChecksum;
+}
+
+void SCMPacket::readData(const char * packet){
+  this->id[0] = packet[0];
+  this->id[1] = packet[1];
+  for(int i = SCM_PACKET_DATA_START, k = 0; i<=SCM_PACKET_DATA_END; i++, k++){
+    this->data[k] = packet[i];
+  }
+  this->checksum = packet[SCM_PACKET_CHECKSUM_START] - '0';
+  this->checksum *= 10;
+  this->checksum += packet[SCM_PACKET_CHECKSUM_START + 1] - '0';
+}
+
+const char * SCMPacket::getData(){
+  return this->data;
+}
+
+const char * SCMPacket::getId(){
+  return this->id;
 }

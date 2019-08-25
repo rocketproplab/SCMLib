@@ -19,9 +19,23 @@ namespace RPL {
     mu_check(packet.isValid() == false);
   }
 
+  MU_TEST(properties_read_correctly_off_of_valid_packet){
+    const char packetStr[] = "HB,12345,81;";
+    SCMPacket packet(packetStr, sizeof(packetStr)-1);
+    mu_assert_int_eq(packet.getId()[0], 'H');
+    mu_assert_int_eq(packet.getId()[1], 'B');
+
+    mu_assert_int_eq(packet.getData()[0], '1');
+    mu_assert_int_eq(packet.getData()[1], '2');
+    mu_assert_int_eq(packet.getData()[2], '3');
+    mu_assert_int_eq(packet.getData()[3], '4');
+    mu_assert_int_eq(packet.getData()[4], '5');
+  }
+
   MU_TEST_SUITE(SCM_packet_tests){
     MU_RUN_TEST(empty_string_results_in_invalid_packet);
     MU_RUN_TEST(valid_packet_string_reports_valid_packet);
     MU_RUN_TEST(invalid_checksum_in_string_returns_invalid_packet);
+    MU_RUN_TEST(properties_read_correctly_off_of_valid_packet);
   }
 }
