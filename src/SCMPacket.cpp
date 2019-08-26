@@ -3,6 +3,13 @@
 using namespace RPL;
 
 /*
+ * Creates empty invalid packet.
+ */
+SCMPacket::SCMPacket(){
+  this->valid = false;
+}
+
+/*
  * Create a new SCM packet from the given string of length len.
  * This will make sure the string is of the right length and has the right
  * checksum.
@@ -74,9 +81,11 @@ int SCMPacket::calculateChecksum(const char * packet) {
 void SCMPacket::readData(const char * packet){
   this->id[0] = packet[0];
   this->id[1] = packet[1];
+  this->id[2] = '\0';
   for(int i = SCM_PACKET_DATA_START, k = 0; i<=SCM_PACKET_DATA_END; i++, k++){
     this->data[k] = packet[i];
   }
+  this->data[sizeof(this->data)-1] = '\0';
   this->checksum = packet[SCM_PACKET_CHECKSUM_START] - '0';
   this->checksum *= 10;
   this->checksum += packet[SCM_PACKET_CHECKSUM_START + 1] - '0';
@@ -113,7 +122,7 @@ void SCMPacket::write(char * bufToWriteTo){
      bufToWriteTo[i] = this->data[k];
   }
   bufToWriteTo[SCM_PACKET_DATA_END+1] = ',';
-  
+
   int checksum = this->calculateChecksum(bufToWriteTo);
   bufToWriteTo[SCM_PACKET_CHECKSUM_START+1] = (checksum % 10) + '0';
   checksum /= 10;

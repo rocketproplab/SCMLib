@@ -23,14 +23,9 @@ namespace RPL {
   MU_TEST(properties_read_correctly_off_of_valid_packet){
     const char packetStr[] = "HB,12345,81;";
     SCMPacket packet(packetStr, sizeof(packetStr)-1);
-    mu_assert_int_eq(packet.getId()[0], 'H');
-    mu_assert_int_eq(packet.getId()[1], 'B');
+    mu_assert_string_eq("HB", packet.getId());
 
-    mu_assert_int_eq(packet.getData()[0], '1');
-    mu_assert_int_eq(packet.getData()[1], '2');
-    mu_assert_int_eq(packet.getData()[2], '3');
-    mu_assert_int_eq(packet.getData()[3], '4');
-    mu_assert_int_eq(packet.getData()[4], '5');
+    mu_assert_string_eq("12345", packet.getData());
   }
 
   MU_TEST(reflexive_call_to_string_ctor_and_write_returns_same_string){
@@ -39,7 +34,7 @@ namespace RPL {
     ZERO_MEM(writePacket);
     SCMPacket packet(packetStr, sizeof(packetStr)-1);
     packet.write(writePacket);
-    mu_check(strncmp(packetStr, writePacket, sizeof(writePacket) - 1) == 0);
+    mu_assert_string_eq(packetStr, writePacket);
   }
 
   MU_TEST(write_with_valid_data_generates_packet){
@@ -48,7 +43,7 @@ namespace RPL {
     ZERO_MEM(writePacket);
     SCMPacket packet("HB", "12345");
     packet.write(writePacket);
-    mu_check(strncmp(packetStr, writePacket, sizeof(writePacket) - 1) == 0);
+    mu_assert_string_eq(packetStr, writePacket);
   }
 
   MU_TEST_SUITE(SCM_packet_tests){

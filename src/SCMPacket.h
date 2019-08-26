@@ -1,3 +1,5 @@
+#ifndef SCM_PACKET_H
+#define SCM_PACKET_H
 
 namespace RPL{
   const int SCM_PACKET_LEN = 12;
@@ -9,6 +11,7 @@ namespace RPL{
   public:
     SCMPacket(const char * stringRep, int len);
     SCMPacket(const char * id, const char * data);
+    SCMPacket();
 
     bool isValid();
     void write(char * buffer);
@@ -20,7 +23,9 @@ namespace RPL{
     void readData(const char * stringRep);
     bool valid;
     int checksum;
-    char id[2];
-    char data[SCM_PACKET_DATA_END-SCM_PACKET_DATA_START+1];
+    char id[3];
+    char data[SCM_PACKET_DATA_END-SCM_PACKET_DATA_START+2];
   };
 }
+
+#endif
