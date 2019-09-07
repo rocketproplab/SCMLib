@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
+project(SCMLib_core)
+
 set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
