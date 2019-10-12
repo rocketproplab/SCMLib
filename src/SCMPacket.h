@@ -7,6 +7,7 @@ namespace RPL{
   const int SCM_PACKET_DATA_START = 3;
   const int SCM_PACKET_DATA_END = 7;
   const int SCM_PACKET_CHECKSUM_START = 9;
+  const int SCM_PACKET_DATA_LEN = SCM_PACKET_DATA_END-SCM_PACKET_DATA_START + 1;
   class SCMPacket {
   public:
     SCMPacket(const char * stringRep, int len);
@@ -24,7 +25,7 @@ namespace RPL{
     bool valid;
     int checksum;
     char id[3];
-    char data[SCM_PACKET_DATA_END-SCM_PACKET_DATA_START+2];
+    char data[SCM_PACKET_DATA_LEN+1];
   };
 }
 
